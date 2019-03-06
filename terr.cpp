@@ -15,7 +15,7 @@ int main()
     double more=0;
     float dhruv_x,dhruv_y,dhruv_x1,dhruv_y1;
     
-    Texture brahman_d;
+    Texture brahman_d,brahman_ds;
     brahman_d.loadFromFile("spacebg.png");
     brahman_d.setRepeated(true);
     
@@ -23,6 +23,14 @@ int main()
     
     Sprite space(brahman_d,irect);
     space.setPosition(-500000,-500000);
+    
+    brahman_ds.loadFromFile("star.png");
+    brahman_ds.setRepeated(true);
+    
+    IntRect irect1(FloatRect(-500000,-500000,1000000,1000000));
+    
+    Sprite space1(brahman_ds,irect1);
+    space1.setPosition(-500000,-500000);
     
     Texture yan;
     yan.loadFromFile("Yaan.png");
@@ -78,12 +86,35 @@ int main()
                     }
                     if(disha>r1.getRotation())
                     {
-                        disha-=0.8;
+						if(disha-r1.getRotation()>180)
+						{
+							disha+=0.8;
+						}
+						else
+						{
+							disha-=0.8;
+						}
+                        
                     }
                     else
                     {
-                        disha+=0.8;
+                        if(r1.getRotation()-disha>180)
+						{
+							disha-=0.8;
+						}
+						else
+						{
+							disha+=0.8;
+						}
                     }
+                    if(disha<0)
+                    {
+						disha=360.0;
+					}
+					if(disha>360)
+					{
+						disha=0.0;
+					}
                 }
                 dhruv_x1=-yaan_ki_gatiy*sin(disha*PI/180);
                 dhruv_y1=yaan_ki_gatiy*cos(disha*PI/180);
@@ -116,11 +147,13 @@ int main()
         {
             r1.move(dhruv_x1,dhruv_y1);
             v1.move(dhruv_x1,dhruv_y1);
+            space1.move(dhruv_x1/2,dhruv_y1/2);
             window.setView(v1);
         }
         
         window.clear(Color::Black);
         window.draw(space);
+        window.draw(space1);
         window.draw(r1);
         window.display();
     }
